@@ -203,3 +203,6 @@ __marimo__/
 .streamlit/secrets.toml
 
 database.ini
+
+reports/
+test_report.json
