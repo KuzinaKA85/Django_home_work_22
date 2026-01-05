@@ -23,6 +23,7 @@ def products_detail(request, pk):
     context = {"product": product}
     return render(request, "products_detail.html", context)
 
+
 # def product_list(request):
 #     products = Product.objects.all()
 #     context = {"products": products}

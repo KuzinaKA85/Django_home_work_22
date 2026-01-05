@@ -22,7 +22,7 @@ class Product(models.Model):
     )
     description_product = models.TextField(verbose_name="Описание продукта")
     image_product = models.ImageField(
-        upload_to="products/photo/", verbose_name="Изображения"
+        upload_to="products/", verbose_name="Изображения", blank=True, null=True
     )
     category_product = models.ForeignKey(
         Category,
