@@ -1,29 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Список статей</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
-</head>
-<body>
+{% extends 'blogs/blogs_base.html' %}
 {% load my_tags %}
-    <div class="container mt-5">
+{% block content %}
 
-        <h1 class="mb-4">Список статей</h1>
-        <a href="{% url 'blogs:article_form' %}" class="btn btn-primary mb-3">Создать новую статью</a>
-        <ul class="list-group">
-            {% for article in articles %}
-                <img src="{{ article.image_article | media_filter }}"
-                        alt="{{ article.title_article }}"
-                        class="card-img-top"
-                        style="height: 350px; width: 70%; object-fit: cover; display: block; margin: 30 auto;">
-                    <li class="list-group-item mb-5">
-                        <a href="{% url 'blogs:article_detail' article.pk %}">{{ article.title_article }}</a>
-                        <a href="{% url 'blogs:article_update' article.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
-                        <a href="{% url 'blogs:article_confirm_delete' article.pk %}" class="btn btn-sm btn-danger ml-1">Удалить</a>
-                    </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <script type="text/javascript" src="/static/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<div class="container mt-5">
+
+    <h1 class="mb-4">Список статей</h1>
+    <a href="{% url 'blogs:article_form' %}" class="btn btn-primary mb-3">Создать новую статью</a>
+    <ul class="list-group">
+        {% for article in articles %}
+            <img src="{{ article.image_article | media_filter }}"
+                    alt="{{ article.title_article }}"
+                    class="card-img-top"
+                    style="height: 350px; width: 70%; object-fit: cover; display: block; margin: 30 auto;">
+                <li class="list-group-item mb-5">
+                    <a href="{% url 'blogs:article_detail' article.pk %}">{{ article.title_article }}</a>
+                    <a href="{% url 'blogs:article_update' article.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
+                    <a href="{% url 'blogs:article_confirm_delete' article.pk %}" class="btn btn-sm btn-danger ml-1">Удалить</a>
+                </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

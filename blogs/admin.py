@@ -11,6 +11,17 @@ from blogs.models import Article
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ("id", "title_article", "content_article", "created_at", "is_active", "views_count")
-    list_filter = ("title_article", "created_at", "is_active",)
+    list_display = (
+        "id",
+        "title_article",
+        "content_article",
+        "created_at",
+        "is_active",
+        "views_count",
+    )
+    list_filter = (
+        "title_article",
+        "created_at",
+        "is_active",
+    )
     search_fields = ("title_article", "content_article")
