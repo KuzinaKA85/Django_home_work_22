@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
+from .mixins import ProductFormMixin
 from .models import Category, Product
 
 
@@ -10,7 +11,7 @@ class CategoryForm(forms.ModelForm):
         fields = ["name_category", "description_category"]
 
 
-class ProductForm(forms.ModelForm):
+class ProductForm(ProductFormMixin, forms.ModelForm):
     class Meta:
         model = Product
         fields = [
@@ -43,9 +44,8 @@ class ProductForm(forms.ModelForm):
         if any(word in description.lower() for word in ban_words):
             self.add_error("description_product", "Использованны запрещённые слова")
 
-
     def clean_price_product(self):
-        price_product = self.cleaned_data.get('price_product')
+        price_product = self.cleaned_data.get("price_product")
         if price_product < 0:
-            raise ValidationError('Цена продукта не может быть отрицательной')
+            raise ValidationError("Цена продукта не может быть отрицательной")
         return price_product
