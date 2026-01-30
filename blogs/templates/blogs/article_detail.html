@@ -1,18 +1,25 @@
 {% extends 'blogs/blogs_base.html' %}
 {% load my_tags %}
 {% block content %}
-
-<div class="container mt-5">
-    <img src="{{ object.image_article | media_filter }}"
-                    alt="{{ object.title_article }}"
-                    class="card-img-top"
-                    style="height: 350px; width: 100%; object-fit: cover;">
-        <h1 class="mb-4">{{ article.title_article }}</h1>
-        <p>{{ article.content_article|linebreaks }}</p>
-        <p>Создано: {{ article.created_at }}</p>
-        <p>Обновлено: {{ article.updated_at }}</p>
-        <a href="{% url 'blogs:article_update' article.pk %}" class="btn btn-secondary">Редактировать</a>
-        <a href="{% url 'blogs:article_confirm_delete' article.pk %}" class="btn btn-danger">Удалить</a>
-        <a href="{% url 'blogs:article_list' %}" class="btn btn-primary">Вернуться к списку статей</a>
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col">
+                <div class="card shadow-sm">
+                    <img src="{{ object.image_article | media_filter }}"
+                        alt="{{ object.title_article }}"
+                        class="card-img-top"
+                        style="height: 350px; width: 100%; object-fit: cover;">
+                        <h1 class="mb-4">{{ object.title_article }}</h1>
+                        <p>{{ object.content_article|linebreaks }}</p>
+                        <p>Создано: {{ article.created_at }}</p>
+                        <p>Обновлено: {{ article.updated_at }}</p>
+                        <a href="{% url 'blogs:article_update' article.pk %}" class="btn btn-secondary">Редактировать</a>
+                        <a href="{% url 'blogs:article_confirm_delete' article.pk %}" class="btn btn-danger">Удалить</a>
+                        <a href="{% url 'blogs:article_list' %}" class="btn btn-primary">Вернуться к списку статей</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

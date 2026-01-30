@@ -20,8 +20,5 @@ urlpatterns = [
         "article/update/<int:pk>/", ArticleUpdateView.as_view(), name="article_update"
     ),
     path(
-        "article/delete/<int:pk>/",
-        ArticleDeleteView.as_view(),
-        name="article_confirm_delete",
-    ),
+        "article/delete/<int:pk>/", ArticleDeleteView.as_view(), name="article_confirm_delete",),
 ]

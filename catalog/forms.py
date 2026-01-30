@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+
 from .models import Category, Product
 
 
@@ -40,3 +42,10 @@ class ProductForm(forms.ModelForm):
 
         if any(word in description.lower() for word in ban_words):
             self.add_error("description_product", "Использованны запрещённые слова")
+
+
+    def clean_price_product(self):
+        price_product = self.cleaned_data.get('price_product')
+        if price_product < 0:
+            raise ValidationError('Цена продукта не может быть отрицательной')
+        return price_product
