@@ -3,6 +3,8 @@
 {% block content %}
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
+        <h1 class="mb-4">Список продуктов</h1>
+        <a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3">Создать новый продукт</a>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% for product in object_list %}
             <div class="col">
