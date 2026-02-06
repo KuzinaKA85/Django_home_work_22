@@ -13,6 +13,7 @@
         </form>
         {% else %}
         <a class="p-2 btn btn-outline-primary" href="{% url 'users:login' %}">Вход</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:user_form' %}">Регистрация</a>
         {% endif %}
     </nav>
 </div>
