@@ -10,7 +10,7 @@ from users.forms import UserRegisterForm
 from users.models import User
 
 
-class UserRegisterView(LoginRequiredMixin, CreateView):
+class UserRegisterView(CreateView):
     model = User
     form_class = UserRegisterForm
     template_name = "users/user_form.html"
