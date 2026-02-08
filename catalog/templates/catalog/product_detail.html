@@ -14,13 +14,17 @@
                         <p>{{ object.description_product|linebreaks }}</p>
                         <p>Создано: {{ object.created_at }}</p>
                         <p>Обновлено: {{ object.updated_at }}</p>
-                        <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-secondary">Редактировать</a>
-                        <a href="{% url 'catalog:product_confirm_delete' product.pk %}" class="btn btn-danger">Удалить</a>
+                        {% if product.owner == user %}
+                            <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-secondary">Редактировать</a>
+                        {% endif %}
+                        {% if product.owner == user or perms.catalog.delete_product %}
+                            <a href="{% url 'catalog:product_confirm_delete' product.pk %}" class="btn btn-danger">Удалить</a>
+                        {% endif %}
                         <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">Вернуться к списку продуктов</a>
                         {% if perms.catalog.can_unpublish_product %}
                             <form action="{% url 'catalog:product_unpublish' product.pk %}" method="post">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-danger">Отменить публикацию</button>
+                                <button class="btn btn-danger">Отменить публикацию</button>
                             </form>
                         {% endif %}
                 </div>

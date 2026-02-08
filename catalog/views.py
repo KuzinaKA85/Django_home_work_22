@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, request
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -42,6 +42,10 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     template_name = "catalog/product_form.html"
     success_url = reverse_lazy("catalog:product_list")
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
@@ -49,12 +53,26 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "catalog/product_form.html"
     success_url = reverse_lazy("catalog:product_list")
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(owner=self.request.user)
+
 
 class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     template_name = "catalog/product_confirm_delete.html"
     success_url = reverse_lazy("catalog:product_list")
     permission_required = ("catalog.delete_product",)
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        if not (
+            self.object.owner == request.user
+            or request.user.has_perm("catalog.delete_product")
+        ):
+            return HttpResponseForbidden("Нет прав на удаление")
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ProductUnpublishView(View):
