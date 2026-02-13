@@ -8,7 +8,7 @@ from .models import Category, Product
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ["name_category", "description_category"]
+        fields = ["id", "name_category", "description_category"]
 
 
 class ProductForm(ProductFormMixin, forms.ModelForm):
