@@ -1,20 +1,22 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import HttpResponse, HttpResponseForbidden, request
-from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponse, HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.decorators.cache import cache_page
-from django.views.generic import ListView, DetailView, TemplateView, CreateView
+from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from catalog.forms import ProductForm
-from catalog.models import Product
+from catalog.models import Product, Category
+from catalog.services import get_product_from_cache, get_products_by_category
 
 
 class ProductListView(ListView):
     model = Product
     template_name = "catalog/product_list.html"
+
+    def get_queryset(self):
+        return get_product_from_cache()
 
 
 class ContactView(TemplateView):
@@ -33,7 +35,6 @@ class ContactView(TemplateView):
         )
 
 
-# @method_decorator(cache_page(60*15), name='dispatch')
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = "catalog/product_detail.html"
@@ -87,3 +88,11 @@ class ProductUnpublishView(View):
             return redirect("catalog:product_list")
         else:
             return HttpResponseForbidden("У вас нет прав на выполнение этого действия.")
+
+
+def category_products(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    products = get_products_by_category(category_id)
+
+    context = {"category": category, "products": products}
+    return render(request, "catalog/category_products.html", context)
